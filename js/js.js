@@ -27,12 +27,22 @@ let pontosDoOponente = 0;
 
 let colidiu = false;
 
+// Sons do Jogo.
+let raquetada;
+let ponto;
+let trilha;
+
+let chanceDeErrar = 0;
+
 function preload(){
-  trilha = loadSound("")
+  trilha = loadSound("./sons/trilha.mp3");
+  raquetada = loadSound("./sons/raquetada.mp3");
+  ponto = loadSound("./sons/ponto.mp3");
 }
 
 function setup() {
   createCanvas(600, 400);
+  // trilha.loop();
 }
   
 function draw() {
@@ -49,7 +59,8 @@ function draw() {
   verificaColisaoRaquete(xRaqueteAd, yRaqueteAd)
   incluirPontos()
   marcaPontos()
-
+  calculaChanceDeErrar()
+  bolinhaNaoFicaPresa();
 }
 
 function mostraBolinha(){
@@ -88,19 +99,26 @@ function movimentaRaquete(){
 //     && yBolinha - raio < yRaquete + alturaRaquete
 //     && yBolinha + raio > yRaquete){
 //     velocidadeXBolinha *= -1;
+//     // raquetada.play();
 //   }
 // }
 
 function verificaColisaoRaquete(x, y){
   colidiu = collideRectCircle(x, y, comprimentoRaquete, alturaRaquete, xBolinha, yBolinha, raio);
   if(colidiu){
-    velocidadeXBolinha *=-1;
+    velocidadeXBolinha *= -1;
+    raquetada.play();
   }
+
 }
 
 function movimentaRaqueteOponente(){
-  velocidadeYOponente = yBolinha - yRaqueteAd - comprimentoRaquete / 2 - 30;
-  yRaqueteAd += velocidadeYOponente
+  if(keyIsDown(87)){
+    yRaqueteAd -= 7;
+  }
+  if(keyIsDown(83)){
+    yRaqueteAd += 7;
+  }
 }
 
 function incluirPontos(){
@@ -120,8 +138,36 @@ function incluirPontos(){
 function marcaPontos(){
   if(xBolinha > 590){
     meusPontos += 1;
+    ponto.play();
   }
   if(xBolinha < 10){
     pontosDoOponente += 1;
+    ponto.play();
+  }
+}
+
+function movimentaRaqueteOponente(){
+  velocidadeYOponente = yBolinha - yRaqueteAd - alturaRaquete / 2 - 30;
+  yRaqueteAd += velocidadeYOponente + chanceDeErrar
+  calculaChanceDeErrar()
+}
+
+function calculaChanceDeErrar() {
+  if (pontosDoOponente >= meusPontos) {
+    chanceDeErrar += 1
+    if (chanceDeErrar >= 35){
+    chanceDeErrar = 40
+    }
+  } else {
+    chanceDeErrar -= 1
+    if (chanceDeErrar <= 35){
+    chanceDeErrar = 35
+    }
+  }
+}
+
+function bolinhaNaoFicaPresa(){
+  if(xBolinha - raio < 0){
+    xBolinha = 23
   }
 }
