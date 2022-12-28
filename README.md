@@ -1,6 +1,6 @@
 <h1 align="center"> Game Ping-Pong <img width="35px" src="https://user-images.githubusercontent.com/112782424/209587902-34c3d7b8-10ae-4797-b358-f694133c2f27.png" /> </h1>
 
-<h6 align="center">Projeto realizado em parceria com   
+<h6 align="center">Projeto realizado com a plataforma de cursos da   
 <a href="https://www.alura.com.br/" target="_blank">Alura </a> </h6>
  
  
